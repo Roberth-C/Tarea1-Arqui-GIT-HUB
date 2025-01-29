@@ -1,0 +1,23 @@
+{
+  "type": "module",
+  "name": "tarea1-backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "Backend para la API de usuarios",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "fs": "latest",
+    "path": "latest",
+    "pg": "^8.13.1",
+    "wait-on": "^8.0.2"
+  }
+}

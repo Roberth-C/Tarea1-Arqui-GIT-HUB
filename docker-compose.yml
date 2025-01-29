@@ -1,0 +1,47 @@
+services:
+  postgres:
+    image: postgres:14
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: roberth
+      POSTGRES_PASSWORD: admin1234
+      POSTGRES_DB: GestionUsuarios
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-data/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U roberth -d GestionUsuarios"]
+      interval: 10s
+      retries: 5
+      timeout: 5s
+    ports:
+      - "5432:5432"
+
+  backend:
+    image: miltonrcr/backend:v2
+    container_name: backend
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: roberth
+      DB_PASSWORD: admin1234
+      DB_NAME: GestionUsuarios
+    ports:
+      - "4000:4000"
+
+  frontend:
+    image: miltonrcr/frontend
+    container_name: frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "3001:80"
+
+volumes:
+  postgres_data:
