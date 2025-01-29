@@ -1,0 +1,63 @@
+version: '3.9'
+
+services:
+  postgres:
+    build:
+      context: ./init-data
+      dockerfile: Dockerfile
+    image: miltonrcr/postgres:v1 # Etiqueta de la imagen
+    environment:
+      POSTGRES_USER: roberth
+      POSTGRES_PASSWORD: admin1234
+      POSTGRES_DB: GestionUsuarios
+    volumes:
+      - ./init-data/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+    restart: always
+
+  backend:
+    build:
+      context: ./back-end
+      dockerfile: Dockerfile
+    image: miltonrcr/backend:v1 # Etiqueta de la imagen
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: roberth
+      DB_PASSWORD: admin1234
+      DB_NAME: GestionUsuarios
+    depends_on:
+      - postgres
+    ports:
+      - "4000:4000"
+    networks:
+      - app-network
+    restart: on-failure
+    entrypoint: >
+      sh -c "./wait-for-it.sh postgres:5432 -- npm start"
+    volumes:
+      - ./back-end:/usr/src/app
+
+  frontend:
+    build:
+      context: ./front-end
+      dockerfile: Dockerfile
+    image: miltonrcr/frontend:v1 # Etiqueta de la imagen
+    environment:
+      REACT_APP_API_URL: http://backend:4000
+    depends_on:
+      - backend
+    ports:
+      - "3001:3001"
+    networks:
+      - app-network
+    restart: on-failure
+    volumes:
+      - ./front-end:/usr/src/app
+
+networks:
+  app-network:
+    driver: bridge

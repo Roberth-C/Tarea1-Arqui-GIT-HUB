@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: tarea-01
+spec:
+  selector:
+    matchLabels:
+      app: frontend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: miltonrcr/frontend:latest
+        ports:
+        - containerPort: 3001
+        resources:
+          requests:
+            memory: "150Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        env:
+        - name: REACT_APP_BACKEND_URL
+          value: "http://backend:4000/api/users"  # Asegúrate de que apunte correctamente al backend
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: frontend
+  namespace: tarea-01
+spec:
+  selector:
+    app: frontend
+  ports:
+  - protocol: TCP
+    port: 3001
+    targetPort: 3001
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: front-ingress
+  namespace: tarea-01
+spec:
+  rules:
+  - host: frontend.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend
+            port:
+              number: 3001

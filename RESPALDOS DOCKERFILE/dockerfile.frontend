@@ -1,0 +1,66 @@
+# # Etapa 1: Construcción de la aplicación React
+# FROM node:18 as build
+
+# # Establece el directorio de trabajo dentro del contenedor
+# WORKDIR /app
+
+# # Copia los archivos de configuración y dependencias
+# COPY package*.json ./
+
+# # Instala las dependencias
+# RUN npm install
+
+# # Copia todo el código fuente del frontend
+# COPY . .
+
+# # Construye la aplicación React para producción
+# RUN npm run build
+
+# # Etapa 2: Servir la aplicación con un servidor simple (serve)
+# FROM node:18-slim
+
+# # Instala el paquete 'serve' para servir los archivos estáticos
+# RUN npm install -g serve
+
+# # Copia los archivos generados desde la etapa de construcción
+# COPY --from=build /app/build /build
+
+# # Expone el puerto 3001 para servir la aplicación React
+# EXPOSE 3001
+
+# # Comando para ejecutar el servidor
+# CMD ["serve", "-s", "/build", "-l", "3001"]
+
+#SEGUNDA EDICION
+# Usar una imagen base de Node.js para construir el frontend
+FROM node:16 AS build
+
+# Establecer el directorio de trabajo
+WORKDIR /usr/src/app
+
+# Copiar el package.json y package-lock.json
+COPY package*.json ./
+
+# Instalar dependencias
+RUN npm install
+
+# Copiar el resto de los archivos del frontend
+COPY ./ . 
+
+# Construir la aplicación
+RUN npm run build
+
+# Usar una imagen base de Nginx para servir la aplicación
+FROM nginx:alpine
+
+# Copiar los archivos construidos al directorio de Nginx
+COPY --from=build /usr/src/app/build /usr/share/nginx/html
+
+# Copiar la configuración personalizada de Nginx
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Exponer el puerto del frontend
+EXPOSE 3001
+
+# Comando por defecto para iniciar Nginx
+CMD ["nginx", "-g", "daemon off;"]
