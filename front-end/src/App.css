@@ -1,0 +1,119 @@
+/* Contenedor principal */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem;
+  margin-top: 30px;
+  padding: 20px;
+  flex-wrap: wrap; /* Permite que el contenido se ajuste en pantallas pequeñas */
+}
+
+/* Formulario de usuario */
+.form-container {
+  width: 25%; /* Haciendo el formulario más estrecho */
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* Tabla de usuarios */
+.table-container {
+  width: 65%; /* Tabla más ancha */
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* Estilo para los botones de acción */
+button {
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: none;
+  background-color: #164db2;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #218838;
+}
+
+/* Estilo para los campos del formulario */
+input[type="text"],
+input[type="email"],
+input[type="number"] {
+  width: 90%;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+/* Tabla */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  padding: 12px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #007bff;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* Paginación */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination-button {
+  padding: 5px 10px;
+  margin-left: 5px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.pagination-button:hover {
+  background-color: #0056b3;
+}
+
+.pagination-info {
+  margin-left: 15px;
+  font-size: 14px;
+  line-height: 30px;
+}
+
+/* Centrar el texto en el encabezado */
+h1 {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* Títulos centrados */
+h2 {
+  text-align: center;
+  font-weight: bold;
+  font-size: 3.em;  /* Ajusta el tamaño del texto si lo necesitas */
+  margin-bottom: 20px; /* Da espacio debajo del título */
+}
